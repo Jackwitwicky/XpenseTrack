@@ -4,5 +4,16 @@ export default {
   white: "#ffffff",
   textLight: "#ededed",
   transactionName: "#1d272a",
-  transactionDate: "#6c7174"
+  transactionDate: "#6c7174",
+  food: "green",
+  gift: "#18191B",
+  medical: "blue",
+  home: "#2A9988",
+  transport: "#2A9988",
+  personal: "#275CEA",
+  pets: "#974B00",
+  utilities: "#4331A9",
+  travel: "#2A9988",
+  finance: "green",
+  shopping: "#FD5618",
 }

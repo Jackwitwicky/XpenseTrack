@@ -2,11 +2,12 @@ import React from 'react';
 import { Text, View, StyleSheet } from "react-native";
 
 import ListItemIcon from "../components/ListItemIcon";
+import colors from '../config/colors';
 
-function ListItem({header, name, description}) {
+function ListItem({header, name, description, category = {name: "bank", color: colors.primary}}) {
   return (
     <View style={styles.container}>
-        <ListItemIcon />
+        <ListItemIcon name={category.name} color={category.color} />
         <View style={styles.detailsContainter}>
           <Text style={styles.header}>{header}</Text>
           <Text style={styles.name}>{name}</Text>

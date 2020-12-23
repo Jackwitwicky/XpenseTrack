@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -8,6 +8,7 @@ import Screen from "../components/Screen";
 
 function AddTransaction(props) {
   const [selectedAccountType, setSelectedAccountType] = useState('bank');
+  const [selectedCategory, setSelectedCategory] = useState('shopping');
   const [accountNameFocused, setAccountNameFocused] = useState(false);
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState('date');
@@ -31,55 +32,73 @@ function AddTransaction(props) {
 
   return (
     <Screen style={styles.screen}>
-      <Text style={styles.inputTitle}>Account</Text>
-      <Picker
-      selectedValue={selectedAccountType}
-       style={styles.accountType}
-       onValueChange={(itemValue, itemIndex) => setSelectedAccountType(itemValue)} >
-         <Picker.Item label="NCBA Bank" value="bank" />
-         <Picker.Item label="Mpesa" value="mobile_money" />
-         <Picker.Item label="Cash" value="cash" />
-      </Picker>
+      <ScrollView>
+        <Text style={styles.inputTitle}>Account</Text>
+        <Picker
+        selectedValue={selectedAccountType}
+        style={styles.accountType}
+        onValueChange={(itemValue, itemIndex) => setSelectedAccountType(itemValue)} >
+          <Picker.Item label="NCBA Bank" value="bank" />
+          <Picker.Item label="Mpesa" value="mobile_money" />
+          <Picker.Item label="Cash" value="cash" />
+        </Picker>
 
-      <Text style={styles.inputTitle}>Amount</Text>
-      <TextInput 
-        onFocus={() => setAccountNameFocused(true)}
-        onBlur={() => setAccountNameFocused()}
-        style={[styles.input, styles.accountName]} placeholder="e.g 500"/>
+        <Text style={styles.inputTitle}>Category</Text>
+        <Picker
+        selectedValue={selectedCategory}
+        style={styles.accountType}
+        onValueChange={(itemValue, itemIndex) => setSelectedCategory(itemValue)} >
+          <Picker.Item label="Food" value="food" />
+          <Picker.Item label="Gifts" value="gift" />
+          <Picker.Item label="Medical" value="medical-bag" />
+          <Picker.Item label="Home" value="home" />
+          <Picker.Item label="Transport" value="car" />
+          <Picker.Item label="Personal" value="account" />
+          <Picker.Item label="Pets" value="cat" />
+          <Picker.Item label="Utilities" value="cogs" />
+          <Picker.Item label="Travel" value="airplane-takeoff" />
+        </Picker>
+
+        <Text style={styles.inputTitle}>Amount</Text>
+        <TextInput 
+          onFocus={() => setAccountNameFocused(true)}
+          onBlur={() => setAccountNameFocused()}
+          style={[styles.input, styles.accountName]} placeholder="e.g 500"/>
 
 
-      <Text style={styles.inputTitle}>Date</Text>
-      <View style={styles.dateContainer}>
-        <Text style={[styles.input, styles.date]}>{getReadableDate(date)}</Text>
-        <View style={styles.setDateButton}>
-          <Button title="Change Date" onPress={() => setShow(!show)}/>
+        <Text style={styles.inputTitle}>Date</Text>
+        <View style={styles.dateContainer}>
+          <Text style={[styles.input, styles.date]}>{getReadableDate(date)}</Text>
+          <View style={styles.setDateButton}>
+            <Button title="Change Date" onPress={() => setShow(!show)}/>
+          </View>
         </View>
-      </View>
-      <View>
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={mode}
-            is24Hour={true}
-            display="default"
-            onChange={onChange}
-          />
-        )}
-      </View>
+        <View>
+          {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              is24Hour={true}
+              display="default"
+              onChange={onChange}
+            />
+          )}
+        </View>
 
-      <Text style={styles.inputTitle}>Description</Text>
-      <TextInput
-        numberOfLines={4}
-        style={styles.input}
-        placeholder="e.g Monthly Shopping" />
+        <Text style={styles.inputTitle}>Description</Text>
+        <TextInput
+          numberOfLines={4}
+          style={styles.input}
+          placeholder="e.g Monthly Shopping" />
 
-      <View style={styles.saveButton}>
-        <Button  title="Save" color={Colors.primary}/>
-      </View>
-      <View>
-        <Button title="Cancel" color={Colors.secondary}/>
-      </View>
+        <View style={styles.saveButton}>
+          <Button  title="Save" color={Colors.primary}/>
+        </View>
+        <View>
+          <Button title="Cancel" color={Colors.secondary}/>
+        </View>
+      </ScrollView>
     </Screen>
   );
 }

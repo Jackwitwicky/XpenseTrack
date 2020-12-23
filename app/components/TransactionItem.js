@@ -4,10 +4,10 @@ import { Text, View, StyleSheet } from "react-native";
 import ListItemIcon from "../components/ListItemIcon";
 import colors from '../config/colors';
 
-function TransactionItem({name, date, amount, type}) {
+function TransactionItem({name, date, amount, type, category = {name: "bank-transfer", color: colors.primary}}) {
   return (
     <View style={styles.container}>
-        <ListItemIcon />
+        <ListItemIcon icon={category.name} color={category.color} />
         <View style={styles.detailsContainter}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.date}>{date}</Text>

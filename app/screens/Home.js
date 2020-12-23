@@ -13,21 +13,24 @@ const DATA = [
     name: "Steak for lunch",
     date: "09/12/2020",
     type: "expense",
-    amount: 2600
+    amount: 2600,
+    category: { name: "food", color: colors.food }
   },
   {
     id: 2,
     name: "Savings Interest",
     date: "09/12/2020",
     type: "income",
-    amount: 450
+    amount: 450,
+    category: { name: "finance", color: colors.finance }
   },
   {
     id: 3,
     name: "Shopping",
     date: "02/12/2020",
     type: "expense",
-    amount: 5400
+    amount: 5400,
+    category: { name: "shopping", color: colors.shopping }
   }
 ]
 
@@ -74,14 +77,14 @@ function Home(props) {
       <View style={styles.bottom}>
 
         <View style={styles.transactionHeading}>
-          <Text style={styles.transactionTitle}>Recent Transaction</Text>
+          <Text style={styles.transactionTitle}>Recent Activity</Text>
           <Text style={styles.viewAllButton}>View All</Text>
         </View>
 
         <FlatList
         data={DATA}
         keyExtractor={(account) => account.id.toString()}
-        renderItem={({ item }) => <TransactionItem name={item.name} amount={item.amount} type={item.type} date={item.date} />} />
+        renderItem={({ item }) => <TransactionItem name={item.name} amount={item.amount} type={item.type} date={item.date} category={item.category} />} />
 
       </View>
 
