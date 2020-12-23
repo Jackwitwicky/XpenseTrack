@@ -10,7 +10,7 @@ function Screen({children, style}) {
 const styles = StyleSheet.create({
   screen: {
     backgroundColor: "#f7f8fb",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     flex: 1
   }
 })

@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from "react-native";
 
-function HorizontalDivider(props) {
+function HorizontalDivider({style}) {
   return (
-    <View style={styles.divider}/>
+    <View style={[styles.divider, style]}/>
   );
 }
 

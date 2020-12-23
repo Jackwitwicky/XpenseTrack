@@ -7,6 +7,11 @@ import Accounts from './app/screens/Accounts';
 import AddAccount from './app/screens/AddAccount';
 import Transactions from './app/screens/Transactions';
 
+// import { SplashScreen } from 'expo';
+
+// SplashScreen.preventAutoHide();
+// setTimeout(SplashScreen.hide, 5000);
+
 export default function App() {
   return (
     <NavigationContainer>
