@@ -6,7 +6,7 @@ import AppTextHeader from "../components/AppTextHeader";
 import Colors from "../config/colors";
 import Screen from "../components/Screen";
 
-function AddAccount(props) {
+function AddAccount({ navigation }) {
   const [selectedAccountType, setSelectedAccountType] = useState('bank');
   const [accountNameFocused, setAccountNameFocused] = useState(false);
   return (
@@ -39,7 +39,7 @@ function AddAccount(props) {
         <Button  title="Save" color={Colors.primary}/>
       </View>
       <View>
-        <Button title="Cancel" color={Colors.secondary}/>
+        <Button title="Cancel" color={Colors.secondary} onPress={() => navigation.goBack()}/>
       </View>
     </Screen>
   );

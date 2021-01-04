@@ -4,15 +4,15 @@ import colors from '../config/colors';
 
 function AppButton({ title, onPress, color="primary" }) {
   return (
-    <TouchableOpacity style={[styles.button, {backgroundColor: coloes[color]}]}>
-
+    <TouchableOpacity style={[styles.button, {backgroundColor: colors[color]}]} onPress={onPress}>
+      <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    width: "100%",
+
     backgroundColor: colors.primary,
     borderRadius: 15,
     padding: 15,

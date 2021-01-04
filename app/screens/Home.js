@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, StyleSheet, Text } from "react-native";
+import { FlatList, View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from '../config/colors';
@@ -34,13 +34,19 @@ const DATA = [
   }
 ]
 
-function Home(props) {
+function Home({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <View style={styles.top}>
         <Text style={styles.homeTitle}>Here's your current financial report of the month</Text>
 
-        <View style={styles.card}>
+
+
+      </View>
+
+      <View style={styles.bottom}>
+
+      <View style={styles.card}>
           <Text style={styles.headerTitle}>Total Savings</Text>
           <View>
             <Text style={styles.header}>Ksh 24,050</Text>
@@ -72,19 +78,17 @@ function Home(props) {
               <Text style={styles.summaryMessage}>Your budget is doing great!</Text>
             </View>
         </View>
-      </View>
-
-      <View style={styles.bottom}>
 
         <View style={styles.transactionHeading}>
           <Text style={styles.transactionTitle}>Recent Activity</Text>
-          <Text style={styles.viewAllButton}>View All</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Transactions")}>
+            <Text style={styles.viewAllButton}>View All</Text>
+          </TouchableOpacity>
         </View>
-
         <FlatList
-        data={DATA}
-        keyExtractor={(account) => account.id.toString()}
-        renderItem={({ item }) => <TransactionItem name={item.name} amount={item.amount} type={item.type} date={item.date} category={item.category} />} />
+          data={DATA}
+          keyExtractor={(account) => account.id.toString()}
+          renderItem={({ item }) => <TransactionItem name={item.name} amount={item.amount} type={item.type} date={item.date} category={item.category} />} />
 
       </View>
 
@@ -96,13 +100,15 @@ function Home(props) {
 const styles = StyleSheet.create({
   bottom: {
     flex: 2,
-    padding: 16
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingBottom: 16
   },
   card: {
     alignSelf: "center",
     width: "90%",
     backgroundColor: colors.white,
-    marginTop: 30,
+    marginTop: "-35%",
     borderRadius: 15,
     padding: 16,
     elevation: 8
@@ -159,7 +165,7 @@ const styles = StyleSheet.create({
   transactionHeading: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 50,
+    marginTop: 20,
     marginBottom: 10
   },
   transactionTitle: {
