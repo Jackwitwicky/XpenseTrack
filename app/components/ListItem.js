@@ -1,19 +1,21 @@
 import React from 'react';
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, TouchableHighlight, TouchableOpacity } from "react-native";
 
 import ListItemIcon from "../components/ListItemIcon";
 import colors from '../config/colors';
 
-function ListItem({header, name, description, category = {name: "bank", color: colors.primary}}) {
+function ListItem({header, name, description, category = {name: "bank", color: colors.primary}, onPress}) {
   return (
-    <View style={styles.container}>
-        <ListItemIcon name={category.name} color={category.color} />
-        <View style={styles.detailsContainter}>
-          <Text style={styles.header}>{header}</Text>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.description}>{description}</Text>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.container}>
+          <ListItemIcon name={category.name} color={category.color} />
+          <View style={styles.detailsContainter}>
+            <Text style={styles.header}>{header}</Text>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.description}>{description}</Text>
+          </View>
         </View>
-      </View>
+    </TouchableOpacity>
   );
 }
 

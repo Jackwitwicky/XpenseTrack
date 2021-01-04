@@ -38,7 +38,7 @@ function Accounts({ navigation }) {
         data={DATA}
         keyExtractor={(account) => account.id.toString()}
         ItemSeparatorComponent={HorizontalDivider}
-        renderItem={({ item }) => <ListItem header={item.header} name={item.name} description={item.description} />} />
+        renderItem={({ item }) => <ListItem header={item.header} name={item.name} description={item.description} onPress={() => navigation.navigate("Account")} />} />
 
       <AppFab icon="plus" backgroundColor="royalblue" onPress={() => navigation.navigate("AddAccount")} />
     
