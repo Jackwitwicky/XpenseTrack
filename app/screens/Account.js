@@ -103,7 +103,6 @@ export default function Account({ navigation }) {
   );
 
   const onTopUp = (navigation) => {
-    console.log("I should top up");
     navigation.navigate("TopUpAccount");
   }
 
@@ -112,7 +111,7 @@ export default function Account({ navigation }) {
       <View style={styles.top}>
         <Text style={styles.accountBalanceHeader}>Current Balance</Text>
         <AppTextHeader  style={styles.accountBalance}>Ksh 630, 000</AppTextHeader>
-        <AppButton title="Top Up" color="secondary" onPress={() => onTopUp(navigation)}></AppButton>
+        <AppButton title="Top Up Account" color="secondary" onPress={() => onTopUp(navigation)}></AppButton>
       </View>
 
       <View style={styles.bottom}>
