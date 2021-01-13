@@ -82,7 +82,7 @@ const IncomeRoute = () => (
 
 const initialLayout = { width: Dimensions.get('window').width };
 
-export default function Account({ navigation }) {
+export default function Account({ navigation, route }) {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'first', title: 'Expenses' },
@@ -102,8 +102,8 @@ export default function Account({ navigation }) {
     />
   );
 
-  const onTopUp = (navigation) => {
-    navigation.navigate("TopUpAccount");
+  const onTopUp = (navigation, route) => {
+    navigation.navigate("TopUpAccount", {account_id: route.params.id});
   }
 
   return (
@@ -111,7 +111,7 @@ export default function Account({ navigation }) {
       <View style={styles.top}>
         <Text style={styles.accountBalanceHeader}>Current Balance</Text>
         <AppTextHeader  style={styles.accountBalance}>Ksh 630, 000</AppTextHeader>
-        <AppButton title="Top Up Account" color="secondary" onPress={() => onTopUp(navigation)}></AppButton>
+        <AppButton title="Top Up Account" color="secondary" onPress={() => onTopUp(navigation, route)}></AppButton>
       </View>
 
       <View style={styles.bottom}>

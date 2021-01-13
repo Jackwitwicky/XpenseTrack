@@ -15,9 +15,7 @@ const setupAccount = () => {
 
 const getAccounts = (onGetAccounts) => {
   setupAccount();
-  // const [accounts, setAccounts] = useState(null);
   let myAccounts = [];
-  // var accounts = null;
   db.transaction(tx => {
     tx.executeSql('select * from accounts', [], (_, { rows: {_array} }) => {
       console.log(JSON.stringify(_array));
@@ -26,10 +24,6 @@ const getAccounts = (onGetAccounts) => {
     }
       );
   });
-
-  // console.log("Value before returning", myAccounts);
-
-  // return myAccounts;
 }
 
 const addAccount = (account, onAccountAdded) => {

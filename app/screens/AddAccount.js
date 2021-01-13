@@ -5,7 +5,6 @@ import { Formik } from 'formik';
 import * as Yup from "yup";
 
 import AccountDB from "../data/AccountDB";
-import AppTextHeader from "../components/AppTextHeader";
 import AppFormField from "../components/forms/AppFormField";
 import Colors from "../config/colors";
 import ErrorMessage from "../components/forms/ErrorMessage";
