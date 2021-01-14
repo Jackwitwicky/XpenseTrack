@@ -2,11 +2,22 @@ import React, { useState } from 'react';
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
+import AppFormField from "../components/forms/AppFormField";
+import ErrorMessage from "../components/forms/ErrorMessage";
 import Colors from "../config/colors";
 import Screen from "../components/Screen";
+import TransactionDB from "../data/TransactionDB";
+import utils from "../config/utils";
 
-function AddTransaction(props) {
+const validationSchema = Yup.object().shape({
+  amount: Yup.number().required().label("Amount"),
+  description: Yup.string().required().label("Description"),
+});
+
+function AddTransaction({ navigation }) {
   const [selectedAccountType, setSelectedAccountType] = useState('bank');
   const [selectedCategory, setSelectedCategory] = useState('shopping');
   const [accountNameFocused, setAccountNameFocused] = useState(false);
@@ -30,74 +41,113 @@ function AddTransaction(props) {
     return currentDate.toLocaleDateString("en-KE",options);
   }
 
+  const onSaveTransaction = (transaction) => {
+    // const transaction = {
+    //   amount: 500,
+    //   description: "Monthly Shopping",
+    //   category: "food",
+    //   account_id: 1,
+    //   date: new Date().toISOString(),
+    //   created_at: new Date().toISOString()
+    // }
+    console.log(transaction);
+
+    // TransactionDB.addTransaction(transaction, onTransactionAdded);
+  }
+
+  const onTransactionAdded = (isAdded) => {
+    if (isAdded) {
+      utils.notifyMessage("Transaction has been added successfully");
+      navigation.goBack();
+    } else {
+      utils.notifyMessage(
+        "An error occurred while saving your transaction. Please try again"
+      );
+    }
+  };
+
   return (
     <Screen style={styles.screen}>
       <ScrollView>
-        <Text style={styles.inputTitle}>Account</Text>
-        <Picker
-        selectedValue={selectedAccountType}
-        style={styles.accountType}
-        onValueChange={(itemValue, itemIndex) => setSelectedAccountType(itemValue)} >
-          <Picker.Item label="NCBA Bank" value="bank" />
-          <Picker.Item label="Mpesa" value="mobile_money" />
-          <Picker.Item label="Cash" value="cash" />
-        </Picker>
+      <Formik
+       initialValues={{amount: "", description: ""}}
+       onSubmit={values => onSaveTransaction({...values, created_at: new Date().toISOString()})}
+       validationSchema={validationSchema} >
+         { ({ handleChange, handleSubmit, errors }) => (
+           <>
+            <Text style={styles.inputTitle}>Account</Text>
+            <Picker
+              selectedValue={selectedAccountType}
+              style={styles.accountType}
+              onValueChange={(itemValue, itemIndex) => setSelectedAccountType(itemValue)} >
+                <Picker.Item label="NCBA Bank" value="bank" />
+                <Picker.Item label="Mpesa" value="mobile_money" />
+                <Picker.Item label="Cash" value="cash" />
+            </Picker>
 
-        <Text style={styles.inputTitle}>Category</Text>
-        <Picker
-        selectedValue={selectedCategory}
-        style={styles.accountType}
-        onValueChange={(itemValue, itemIndex) => setSelectedCategory(itemValue)} >
-          <Picker.Item label="Food" value="food" />
-          <Picker.Item label="Gifts" value="gift" />
-          <Picker.Item label="Medical" value="medical-bag" />
-          <Picker.Item label="Home" value="home" />
-          <Picker.Item label="Transport" value="car" />
-          <Picker.Item label="Personal" value="account" />
-          <Picker.Item label="Pets" value="cat" />
-          <Picker.Item label="Utilities" value="cogs" />
-          <Picker.Item label="Travel" value="airplane-takeoff" />
-        </Picker>
+            <Text style={styles.inputTitle}>Category</Text>
+            <Picker
+              selectedValue={selectedCategory}
+              style={styles.accountType}
+              onValueChange={(itemValue, itemIndex) => setSelectedCategory(itemValue)} >
+                <Picker.Item label="Food" value="food" />
+                <Picker.Item label="Gifts" value="gift" />
+                <Picker.Item label="Medical" value="medical-bag" />
+                <Picker.Item label="Home" value="home" />
+                <Picker.Item label="Transport" value="car" />
+                <Picker.Item label="Personal" value="account" />
+                <Picker.Item label="Pets" value="cat" />
+                <Picker.Item label="Utilities" value="cogs" />
+                <Picker.Item label="Travel" value="airplane-takeoff" />
+            </Picker>
 
-        <Text style={styles.inputTitle}>Amount</Text>
-        <TextInput 
-          onFocus={() => setAccountNameFocused(true)}
-          onBlur={() => setAccountNameFocused()}
-          style={[styles.input, styles.accountName]} placeholder="e.g 500"/>
-
-
-        <Text style={styles.inputTitle}>Date</Text>
-        <View style={styles.dateContainer}>
-          <Text style={[styles.input, styles.date]}>{getReadableDate(date)}</Text>
-          <View style={styles.setDateButton}>
-            <Button title="Change Date" onPress={() => setShow(!show)}/>
-          </View>
-        </View>
-        <View>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
+            <Text style={styles.inputTitle}>Amount</Text>
+              
+            <AppFormField
+              name="amount"
+              placeholder="e.g 500"
+              keyboardType="numeric"
             />
-          )}
-        </View>
+            <ErrorMessage error={errors.amount}></ErrorMessage>
 
-        <Text style={styles.inputTitle}>Description</Text>
-        <TextInput
-          numberOfLines={4}
-          style={styles.input}
-          placeholder="e.g Monthly Shopping" />
+            <Text style={styles.inputTitle}>Date</Text>
+            <View style={styles.dateContainer}>
+              <Text style={[styles.input, styles.date]}>{getReadableDate(date)}</Text>
+              <View style={styles.setDateButton}>
+                <Button title="Change Date" onPress={() => setShow(!show)}/>
+              </View>
+            </View>
+            <View>
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode={mode}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
+                />
+              )}
+            </View>
 
-        <View style={styles.saveButton}>
-          <Button  title="Save" color={Colors.primary}/>
-        </View>
-        <View>
-          <Button title="Cancel" color={Colors.secondary}/>
-        </View>
+            <Text style={styles.inputTitle}>Description</Text>
+            
+            <AppFormField
+              name="description"
+              placeholder="e.g Monthly Shopping"
+              numberOfLines={4}
+            />
+            <ErrorMessage error={errors.description}></ErrorMessage>
+
+            <View style={styles.saveButton}>
+              <Button  title="Save" color={Colors.primary} onPress={handleSubmit}/>
+            </View>
+            <View>
+              <Button title="Cancel" color={Colors.secondary}/>
+            </View>
+           </>
+         )}
+      </Formik>
       </ScrollView>
     </Screen>
   );

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { FlatList, View, StyleSheet, Dimensions, PlatformColor, Text } from 'react-native';
+import { Button, FlatList, View, StyleSheet, Dimensions, Text } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import AppButton from "../components/AppButton";
@@ -8,6 +8,8 @@ import IncomeDB from "../data/IncomeDB";
 import colors from '../config/colors';
 import Screen from '../components/Screen';
 import TransactionItem from "../components/TransactionItem";
+import utils from "../config/utils";
+import AccountDB from '../data/AccountDB';
 
 const DATA = [
   {
@@ -100,7 +102,7 @@ export default function Account({ navigation, route }) {
       <FlatList
           data={incomes}
           keyExtractor={(account) => account.id.toString()}
-          renderItem={({ item }) => <TransactionItem name={"salary"} amount={item.amount} type={"income"} date={item.date} category={{ name: "bank-outline", color: colors.finance }} />} />
+          renderItem={({ item }) => <TransactionItem name={"salary"} amount={item.amount} type={"income"} date={utils.getReadableDate(item.date)} category={{ name: "bank-outline", color: colors.finance }} />} />
     </View>
   );
 
@@ -118,6 +120,7 @@ export default function Account({ navigation, route }) {
   );
 
   const onTopUp = (navigation, route) => {
+    utils.getReadableDate("2021-01-14T12:16:35.705Z");
     navigation.navigate("TopUpAccount", {account_id: route.params.id});
   }
 
@@ -127,6 +130,7 @@ export default function Account({ navigation, route }) {
         <Text style={styles.accountBalanceHeader}>Current Balance</Text>
         <AppTextHeader  style={styles.accountBalance}>Ksh 630, 000</AppTextHeader>
         <AppButton title="Top Up Account" color="secondary" onPress={() => onTopUp(navigation, route)}></AppButton>
+        <Button title="Get Balance" onPress={() => AccountDB.getAccountBalance()}></Button>
       </View>
 
       <View style={styles.bottom}>
