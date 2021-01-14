@@ -13,7 +13,7 @@ import utils from "../config/utils";
 
 const validationSchema = Yup.object().shape({
   amount: Yup.number().required().label("Amount"),
-  // description: Yup.string().required().label("Account Description"),
+  name: Yup.string().required().label("Name"),
 });
 
 function TopUpAccount({ navigation, route }) {
@@ -67,10 +67,8 @@ function TopUpAccount({ navigation, route }) {
 
   return (
     <Screen style={styles.screen}>
-      <Text>The account id is: {route.params.account_id}</Text>
-
       <Formik
-        initialValues={{ amount: "" }}
+        initialValues={{ amount: "", name: "" }}
         onSubmit={(values) =>
           onSaveIncome({
             ...values,
@@ -83,6 +81,14 @@ function TopUpAccount({ navigation, route }) {
       >
         {({ handleChange, handleSubmit, errors }) => (
           <>
+            <Text style={styles.inputTitle}>Top Up Name</Text>
+            <AppFormField
+                name="name"
+                placeholder="e.g Salary"
+            />
+
+            <ErrorMessage error={errors.name}></ErrorMessage>
+            
             <Text style={styles.inputTitle}>Amount</Text>
             <AppFormField
               name="amount"

@@ -8,7 +8,7 @@ const db = SQLite.openDatabase(constants.DATABASE_NAME);
 const setupIncome = () => {
   db.transaction((tx) => {
     tx.executeSql(
-      "create table if not exists incomes (id integer primary key autoincrement, amount integer not null, date text not null, account_id integer not null, created_at text not null, FOREIGN KEY(account_id) REFERENCES accounts(id));"
+      "create table if not exists incomes (id integer primary key autoincrement, name char(100) not null, amount integer not null, date text not null, account_id integer not null, created_at text not null, FOREIGN KEY(account_id) REFERENCES accounts(id));"
     );
   });
 };
@@ -30,8 +30,8 @@ const addIncome = (income, onIncomeAdded) => {
   db.transaction(
     (tx) => {
       tx.executeSql(
-        "insert into incomes (amount, date, account_id, created_at) values (?, ?, ?, ?)",
-        [parseInt(income.amount), income.date, income.account_id, income.created_at]
+        "insert into incomes (name, amount, date, account_id, created_at) values (?, ?, ?, ?, ?)",
+        [income.name, parseInt(income.amount), income.date, income.account_id, income.created_at]
       );
       tx.executeSql("select * from incomes", [], (_, { rows }) =>
         console.log(JSON.stringify(rows))

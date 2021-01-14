@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import { FlatList, View, StyleSheet, Dimensions, PlatformColor, Text } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import AppButton from "../components/AppButton";
 import AppTextHeader from '../components/AppTextHeader';
+import IncomeDB from "../data/IncomeDB";
 import colors from '../config/colors';
 import Screen from '../components/Screen';
 import TransactionItem from "../components/TransactionItem";
@@ -62,24 +63,6 @@ const INCOME_DATA = [
   }
 ]
 
-const ExpenseRoute = () => (
-  <View style={[styles.scene]}>
-    <FlatList
-        data={DATA}
-        keyExtractor={(account) => account.id.toString()}
-        renderItem={({ item }) => <TransactionItem name={item.name} amount={item.amount} type={item.type} date={item.date} category={item.category} />} />
-  </View>
-);
-
-const IncomeRoute = () => (
-  <View style={[styles.scene]}>
-    <FlatList
-        data={INCOME_DATA}
-        keyExtractor={(account) => account.id.toString()}
-        renderItem={({ item }) => <TransactionItem name={item.name} amount={item.amount} type={item.type} date={item.date} category={item.category} />} />
-  </View>
-);
-
 const initialLayout = { width: Dimensions.get('window').width };
 
 export default function Account({ navigation, route }) {
@@ -88,6 +71,38 @@ export default function Account({ navigation, route }) {
     { key: 'first', title: 'Expenses' },
     { key: 'second', title: 'Income' },
   ]);
+
+  const [incomes, setIncomes] = useState([]);
+
+  // life cycle functions
+  useEffect(() => {
+    console.log("get incomes");
+    IncomeDB.getIncomes(onGetIncomes);
+  }, []);
+
+  // call back functions
+  const onGetIncomes = (fetchedIncomes) => {
+    console.log(fetchedIncomes);
+    setIncomes(fetchedIncomes);
+  }
+
+  const ExpenseRoute = () => (
+    <View style={[styles.scene]}>
+      <FlatList
+          data={DATA}
+          keyExtractor={(account) => account.id.toString()}
+          renderItem={({ item }) => <TransactionItem name={item.name} amount={item.amount} type={item.type} date={item.date} category={item.category} />} />
+    </View>
+  );
+  
+  const IncomeRoute = () => (
+    <View style={[styles.scene]}>
+      <FlatList
+          data={incomes}
+          keyExtractor={(account) => account.id.toString()}
+          renderItem={({ item }) => <TransactionItem name={"salary"} amount={item.amount} type={"income"} date={item.date} category={{ name: "bank-outline", color: colors.finance }} />} />
+    </View>
+  );
 
   const renderScene = SceneMap({
     first: ExpenseRoute,
