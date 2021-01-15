@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
+import AccountDB from "../data/AccountDB";
 import AppFormField from "../components/forms/AppFormField";
+import AppFormPicker from "../components/forms/AppFormPicker";
 import ErrorMessage from "../components/forms/ErrorMessage";
 import Colors from "../config/colors";
 import Screen from "../components/Screen";
@@ -17,6 +19,18 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required().label("Description"),
 });
 
+const categories = [
+  {label: "Food", value: "food"},
+  {label: "Gifts", value: "gift"},
+  {label: "Medical", value: "medical-bag"},
+  {label: "Home", value: "home"},
+  {label: "Transport", value: "car"},
+  {label: "Personal", value: "account"},
+  {label: "Pets", value: "cat"},
+  {label: "Utilities", value: "cogs"},
+  {label: "Travel", value: "airplane-takeoff"},
+]
+
 function AddTransaction({ navigation }) {
   const [selectedAccountType, setSelectedAccountType] = useState('bank');
   const [selectedCategory, setSelectedCategory] = useState('shopping');
@@ -24,6 +38,20 @@ function AddTransaction({ navigation }) {
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+  const [accounts, setAccounts] = useState([]);
+
+  // life cycle functions
+  useEffect(() => {
+    console.log("get incomes");
+    AccountDB.getAccounts(onGetAccounts);
+  }, []);
+
+  // callback functions
+  const onGetAccounts = (accounts) => {
+    console.log("The accounts are: ", accounts);
+    var filteredAccounts = accounts.map((account) => {return {label: account.name ,value: account.id}} );
+    setAccounts(filteredAccounts);
+  }
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -50,9 +78,9 @@ function AddTransaction({ navigation }) {
     //   date: new Date().toISOString(),
     //   created_at: new Date().toISOString()
     // }
-    console.log(transaction);
+    console.log("The transaction is: ",transaction);
 
-    // TransactionDB.addTransaction(transaction, onTransactionAdded);
+    TransactionDB.addTransaction(transaction, onTransactionAdded);
   }
 
   const onTransactionAdded = (isAdded) => {
@@ -70,36 +98,22 @@ function AddTransaction({ navigation }) {
     <Screen style={styles.screen}>
       <ScrollView>
       <Formik
-       initialValues={{amount: "", description: ""}}
-       onSubmit={values => onSaveTransaction({...values, created_at: new Date().toISOString()})}
+       initialValues={{amount: "", description: "", account_id: 1, category: "food"}}
+       onSubmit={values => onSaveTransaction({...values, date: date.toISOString(), created_at: new Date().toISOString()})}
        validationSchema={validationSchema} >
          { ({ handleChange, handleSubmit, errors }) => (
            <>
             <Text style={styles.inputTitle}>Account</Text>
-            <Picker
-              selectedValue={selectedAccountType}
-              style={styles.accountType}
-              onValueChange={(itemValue, itemIndex) => setSelectedAccountType(itemValue)} >
-                <Picker.Item label="NCBA Bank" value="bank" />
-                <Picker.Item label="Mpesa" value="mobile_money" />
-                <Picker.Item label="Cash" value="cash" />
-            </Picker>
+            <AppFormPicker
+                name="account_id"
+                items={accounts}
+               />
 
             <Text style={styles.inputTitle}>Category</Text>
-            <Picker
-              selectedValue={selectedCategory}
-              style={styles.accountType}
-              onValueChange={(itemValue, itemIndex) => setSelectedCategory(itemValue)} >
-                <Picker.Item label="Food" value="food" />
-                <Picker.Item label="Gifts" value="gift" />
-                <Picker.Item label="Medical" value="medical-bag" />
-                <Picker.Item label="Home" value="home" />
-                <Picker.Item label="Transport" value="car" />
-                <Picker.Item label="Personal" value="account" />
-                <Picker.Item label="Pets" value="cat" />
-                <Picker.Item label="Utilities" value="cogs" />
-                <Picker.Item label="Travel" value="airplane-takeoff" />
-            </Picker>
+            <AppFormPicker
+              name="category"
+              items={categories}
+            />
 
             <Text style={styles.inputTitle}>Amount</Text>
               
