@@ -5,11 +5,27 @@ const getReadableDate = (dateString) => {
   const date = new Date(dateString);
   const options = {
     weekday: "long",
-   year: "long",
-   month:"long",
-   day:"numeric"
+    year: "long",
+    month: "long",
+    day: "numeric",
   };
-  return date.toLocaleDateString("en-KE",options);
+  return date.toLocaleDateString("en-KE", options);
+};
+
+const getHumanReadableDate = (dateString) => {
+  // provided date is: YYYY-MM-DD
+  const date = new Date(dateString);
+  var options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  // options.timeZone = 'UTC';
+  // options.timeZoneName = 'short';
+  console.log(date.toLocaleDateString("en-GB", options));
+  // const readableDateString = date.format("DS MMMM YYYY");
+  // console.log("The date is", readableDateString);
 };
 
 const notifyMessage = (msg) => {
@@ -20,4 +36,4 @@ const notifyMessage = (msg) => {
   }
 };
 
-export default { notifyMessage, getReadableDate };
+export default { notifyMessage, getReadableDate, getHumanReadableDate };

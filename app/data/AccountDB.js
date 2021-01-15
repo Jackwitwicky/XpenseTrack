@@ -26,9 +26,11 @@ const getAccounts = (onGetAccounts) => {
   });
 }
 
+var inc = 0;
+
 const getAccountBalance = async (onGetAccountBalance) => {
   var computedIncome = 0;
-  var income = await getAccountIncome((incomeSum) => computedIncome = incomeSum);
+  var income = await getAccountIncome((incomeSum) => {computedIncome = incomeSum});
   console.log("The value is: ", computedIncome);
   console.log("The income is: ", income);
 }
